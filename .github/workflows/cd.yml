@@ -1,0 +1,50 @@
+name: Continuous Deployment
+
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
+
+on:
+    # Only run if a PR is merged into main and it contains changeset files
+    pull_request_target:
+        types:
+            - closed
+        branches:
+            - main
+        paths:
+            - .changeset/*.md
+
+jobs:
+    create-release:
+        if: github.event.pull_request.merged == true
+        runs-on: ubuntu-latest
+        timeout-minutes: ${{ fromJSON(vars.DEFAULT_JOB_TIMEOUT) }}
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+              with:
+                  token: ${{ secrets.ACCESS_TOKEN_GITHUB }}
+            - name: Configure git user
+              uses: ./.github/actions/git-configure
+              with:
+                  user_email: c4e.operations@chde.qld.gov.au
+                  user_name: c4e-github-automation-user
+            - name: Install pnpm
+              uses: pnpm/action-setup@v4
+              with:
+                  run_install: false
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version-file: .nvmrc
+                  cache: "pnpm"
+            - name: Install dependencies
+              run: pnpm install --frozen-lockfile
+            - name: Version packages
+              run: |
+                  pnpm changeset version
+                  pnpm install --lockfile-only
+            - name: Commit version updates
+              run: |
+                  git commit -am "chore: update package versions [skip ci]" || echo "No changes to commit"
+                  git push origin HEAD:main

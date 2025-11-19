@@ -1,0 +1,17 @@
+name: configure-git
+description: Configure git
+inputs:
+    user_name:
+        description: Git user.name
+        required: true
+    user_email:
+        description: Git user.email
+        required: true
+
+runs:
+    using: composite
+    steps:
+        - run: |
+              git config --global user.email "${{ inputs.user_email }}"
+              git config --global user.name "${{ inputs.user_name }}"
+          shell: bash

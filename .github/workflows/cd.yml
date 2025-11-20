@@ -47,10 +47,19 @@ jobs:
             - name: Install dependencies
               run: pnpm install --frozen-lockfile
             - name: Version packages
+              id: version_packages
               run: |
                   pnpm changeset version
                   pnpm install --lockfile-only
+                  VERSION=$(node -p "require('./package.json').version")
+                  echo "version=$VERSION" >> "$GITHUB_OUTPUT"
             - name: Commit version updates
               run: |
                   git commit -am "chore: update package versions [skip ci]" || echo "No changes to commit"
                   git push origin HEAD:main
+            - name: Create and push tag
+              run: |
+                  TAG="v${{ steps.version_packages.outputs.version }}"
+                  echo "Tagging release with $TAG"
+                  git tag "$TAG"
+                  git push origin "$TAG"

@@ -20,6 +20,9 @@ importers:
       delete-property:
         specifier: 0.0.4
         version: 0.0.4
+      esbuild:
+        specifier: ^0.27.0
+        version: 0.27.0
       fast-json-patch:
         specifier: ^3.1.1
         version: 3.1.1
@@ -48,9 +51,6 @@ importers:
       '@changesets/cli':
         specifier: ^2.29.7
         version: 2.29.7
-      esbuild:
-        specifier: ^0.27.0
-        version: 0.27.0
       eslint:
         specifier: ^9.22.0
         version: 9.39.1

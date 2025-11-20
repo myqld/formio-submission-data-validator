@@ -13,7 +13,7 @@ providing a API for backend validation flows.
 ## Quick Start
 
 ```js
-const FormioSubmissionDataValidator = require("formio-submission-data-validator");
+const FormioSubmissionDataValidator = require('formio-submission-data-validator');
 
 const validator = new FormioSubmissionDataValidator({
     logger: console,
@@ -23,9 +23,9 @@ const validator = new FormioSubmissionDataValidator({
 
 async function run() {
     const result = await validator.validateSubmission(
-        "https://example.com/form-definition",
-        { name: "John", email: "john@example.com" },
-        { tokens: { "x-jwt-token": "abc123" } }
+        'https://example.com/form-definition',
+        { name: 'John', email: 'john@example.com' },
+        { tokens: { 'x-jwt-token': 'abc123' } }
     );
 
     console.log(result);
@@ -130,4 +130,22 @@ Outputs:
 
 ```bash
 pnpm lint
+```
+
+## Installation
+
+You can install this package directly from GitHub. Use the following commands depending on whether you want the latest version or a specific tagged release.
+
+### Install Latest Version
+
+```bash
+pnpm add myqld/formio-submission-data-validator
+```
+
+### Install a Specific Version
+
+Replace v0.0.2 with any available tag:
+
+```bash
+pnpm add myqld/formio-submission-data-validator#v0.0.2
 ```

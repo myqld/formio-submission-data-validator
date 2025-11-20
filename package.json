@@ -23,7 +23,8 @@
         "build:lib": "esbuild './src/**/*.js' --outdir=lib --platform=node --format=cjs --packages=external",
         "build:dist": "esbuild src/index.js --outdir=dist --bundle --platform=node --format=cjs --packages=external && cp src/index.d.ts ./dist/",
         "build": "pnpm run build:lib && pnpm run build:dist",
-        "lint": "eslint ."
+        "lint": "eslint .",
+        "prepare": "pnpm run build"
     },
     "engines": {
         "node": ">=20.0.0"

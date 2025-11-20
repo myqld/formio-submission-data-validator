@@ -1,6 +1,6 @@
 {
     "name": "formio-submission-data-validator",
-    "version": "0.0.0",
+    "version": "0.0.1",
     "private": true,
     "description": "A form validation service for Formio forms",
     "license": "OSL-3.0",

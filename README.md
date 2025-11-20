@@ -1,6 +1,6 @@
 # Formio Submission Data Validator
 
-A lightweight Node.js service for validating **Form.io** form
+A Node.js service for validating **Form.io** form
 submissions against external form definitions.\
 This module extracts and simplifies the core Form.io validation logic,
 providing a API for backend validation flows.
@@ -8,12 +8,12 @@ providing a API for backend validation flows.
 ## Features
 
 -   Validates submission data against a remote Form.io form definition
--   Runs validation logic inside an isolated VM for safety
+-   Runs validation logic inside an isolated VM
 
 ## Quick Start
 
 ```js
-const FormioSubmissionDataValidator = require("formio-submission-data-validator");
+const FormioSubmissionDataValidator = require('formio-submission-data-validator');
 
 const validator = new FormioSubmissionDataValidator({
     logger: console,
@@ -23,9 +23,26 @@ const validator = new FormioSubmissionDataValidator({
 
 async function run() {
     const result = await validator.validateSubmission(
-        "https://example.com/form-definition",
-        { name: "John", email: "john@example.com" },
-        { tokens: { "x-jwt-token": "abc123" } }
+        {
+            display: 'form',
+            type: 'form',
+            components: [
+                {
+                    label: 'Name',
+                    key: 'name',
+                    type: 'textfield',
+                    input: true,
+                },
+                {
+                    label: 'Email',
+                    key: 'email',
+                    type: 'email',
+                    input: true,
+                },
+            ],
+        },
+        { name: 'John', email: 'john@example.com' },
+        { tokens: { 'x-jwt-token': 'abc123' } }
     );
 
     console.log(result);
@@ -38,7 +55,7 @@ run();
 
 ### `new FormioSubmissionDataValidator(options)`
 
-Creates a new validation service instance.
+Creates a new formio submission data validator instance.
 
 **Options:**
 
@@ -56,12 +73,12 @@ Creates a new validation service instance.
 
 ### `validateSubmission(formUrl, submissionData, options)`
 
-Validates submission data against a Form.io form definition fetched from a URL.
+Validates submission data against a Form.io form definition.
 
 **Parameters:**
 
--   **formUrl** (string)  
-    URL resolving to a Form.io form JSON definition.
+-   **form** (object)  
+    Form.io form JSON definition.
 
 -   **submissionData** (object)  
     Submission data object that will be placed under `submission.data`.
@@ -76,13 +93,21 @@ Validates submission data against a Form.io form definition fetched from a URL.
 
 ### Returns
 
-A Promise resolving to an object of the following shape:
+A Promise resolving to a result object. The shape depends on whether validation succeeded, failed due to form validation errors, or failed due to an internal exception.
 
 ```js
 {
   success: boolean,
+
+  // Present only when the Form.io validator reports validation issues
   errors?: Array | object,
-  error?: { message: string, type: string },
+
+  // Present only when an unexpected error occurs in the validation logic
+  error?: {
+    message: string,
+    type: string
+  },
+
   timestamp: string
 }
 ```
@@ -130,4 +155,22 @@ Outputs:
 
 ```bash
 pnpm lint
+```
+
+## Installation
+
+You can install this package directly from GitHub. Use the following commands depending on whether you want the latest version or a specific tagged release.
+
+### Install Latest Version
+
+```bash
+pnpm add myqld/formio-submission-data-validator
+```
+
+### Install a Specific Version
+
+Replace v0.0.2 with any available tag:
+
+```bash
+pnpm add myqld/formio-submission-data-validator#v0.0.2
 ```

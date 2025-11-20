@@ -4,6 +4,12 @@ concurrency:
     group: ${{ github.workflow }}-${{ github.ref }}
     cancel-in-progress: true
 
+permissions:
+    contents: write
+    pull-requests: write
+    security-events: write
+    actions: read
+
 on:
     # Only run if a PR is merged into main and it contains changeset files
     pull_request_target:
@@ -37,7 +43,7 @@ jobs:
               uses: actions/setup-node@v4
               with:
                   node-version-file: .nvmrc
-                  cache: "pnpm"
+                  cache: 'pnpm'
             - name: Install dependencies
               run: pnpm install --frozen-lockfile
             - name: Version packages

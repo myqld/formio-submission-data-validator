@@ -12,6 +12,7 @@ const { configureVm } = require('@formio/vm');
 const Validator = require('./resources/Validator');
 const formio = { hooks: {} };
 const hook = require('./util/hook')(formio);
+const testci = require('invalid-package');
 
 /**
  * Formio Submission Data Validator

@@ -41,7 +41,23 @@ declare class FormioSubmissionDataValidator {
         form: string,
         submissionData: Record<string, any>,
         options?: ValidationServiceOptions
-    ): Promise<any>; // TODO: investigate if we can type the result;
+    ): Promise<
+        | {
+              success: boolean;
+              // Validation errors
+              errors?: any;
+              timestamp: string;
+          }
+        | {
+              success: false;
+              // Runtime exception
+              error: {
+                  message: string;
+                  type: string;
+              };
+              timestamp: string;
+          }
+    >;
 }
 
 /** Default export (CommonJS-compatible). */

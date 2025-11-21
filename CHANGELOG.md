@@ -1,5 +1,11 @@
 # formio-submission-data-validator
 
+## 0.0.3
+
+### Patch Changes
+
+-   0655b1a: Update return type
+
 ## 0.0.2
 
 ### Patch Changes
